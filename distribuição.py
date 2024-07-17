@@ -2,9 +2,25 @@ import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 import seaborn as sns
-from acessoaobd import acessoaobd
+import sqlite3
+
+def acessoaobd():
+    conn = sqlite3.connect('./db/IoT.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT value FROM data_values')
+    data = cursor.fetchall()
+    conn.close()
+    data = [x[0] for x in data]
+    return data
 
 data = acessoaobd()
+
+try:
+    data = np.array(data, dtype=float)
+except ValueError as e:
+    print(f"Erro ao converter os dados para float: {e}")
+    print(f"Dados problemáticos: {data}")
+    exit(1)
 
 sns.histplot(data, kde=True)
 plt.title('Histograma dos dados de latência')

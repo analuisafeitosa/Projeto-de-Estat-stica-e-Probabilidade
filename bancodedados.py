@@ -1,28 +1,30 @@
 import sqlite3
 
-# Nome do arquivo .txt e do banco de dados
 data_file = 'LAT.txt'
 sqlite_db = './db/IoT.db'
 
-# Conectar ao banco de dados (ele será criado se não existir)
 conn = sqlite3.connect(sqlite_db)
 cursor = conn.cursor()
 
-# Criar a tabela para armazenar os valores
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS data_values (
         value REAL
     )
 ''')
 
-# Ler o arquivo .txt e inserir os dados no banco de dados
-with open(data_file, 'r') as file:
-    for line in file:
-        value = (line.strip())
-        cursor.execute('INSERT INTO data_values (value) VALUES (?)', (value,))
+def clean_value(value):
+    # remove caracteres especiais
+    value = value.replace('\ufeff', '').strip()
+    return value
 
-# Salvar as mudanças e fechar a conexão
+with open(data_file, 'r', encoding='utf-8') as file: 
+    for line in file:
+        line = clean_value(line)
+        try:
+            value = float(line)
+            cursor.execute('INSERT INTO data_values (value) VALUES (?)', (value,))
+        except ValueError:
+            print(f"Valor inválido encontrado e ignorado: '{line}'")
+
 conn.commit()
 conn.close()
-
-print()

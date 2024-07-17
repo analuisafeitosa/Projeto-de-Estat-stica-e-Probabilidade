@@ -2,13 +2,30 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from acessoaobd import acessoaobd
+import sqlite3
+
+def acessoaobd():
+    conn = sqlite3.connect('./db/IoT.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT value FROM data_values')
+    data = cursor.fetchall()
+
+    conn.close()
+
+    return data
 
 data = acessoaobd()
 
 df = pd.DataFrame(data, columns=['Latência'])
 
 print(df.head())
+
+# verifica se é um número, oq não for recebe o nome de NaN
+df['Latência'] = pd.to_numeric(df['Latência'], errors='coerce')
+
+# remove os NaN
+df = df.dropna(subset=['Latência'])
 
 media = df['Latência'].mean()
 mediana = df['Latência'].median()
@@ -33,7 +50,7 @@ plt.ylabel('Frequência')
 plt.show()
 
 plt.figure(figsize=(10, 6))
-sns.boxplot(df['Latência'])
+sns.boxplot(x=df['Latência'])
 plt.title('Boxplot da Latência')
 plt.xlabel('Latência (ms)')
 plt.show()
