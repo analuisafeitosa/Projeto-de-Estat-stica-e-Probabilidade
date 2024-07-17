@@ -2,7 +2,7 @@ import sqlite3
 
 
 def acessoaobd():
-    sqlite_db = "db\graph.db"
+    sqlite_db = "db\IoT.db"
 
     connection = sqlite3.connect(sqlite_db)
 

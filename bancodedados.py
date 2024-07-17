@@ -2,7 +2,7 @@ import sqlite3
 
 # Nome do arquivo .txt e do banco de dados
 data_file = 'LAT.txt'
-sqlite_db = './db/graph.db'
+sqlite_db = './db/IoT.db'
 
 # Conectar ao banco de dados (ele será criado se não existir)
 conn = sqlite3.connect(sqlite_db)
@@ -11,7 +11,6 @@ cursor = conn.cursor()
 # Criar a tabela para armazenar os valores
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS data_values (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
         value REAL
     )
 ''')
