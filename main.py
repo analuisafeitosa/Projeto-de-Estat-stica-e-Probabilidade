@@ -54,3 +54,17 @@ sns.boxplot(x=df['Latência'])
 plt.title('Boxplot da Latência')
 plt.xlabel('Latência (ms)')
 plt.show()
+
+# teste de hipótese Z
+latencia_media = 10  # latencia média hipotetica
+n = len(df['Latência']) # tamanho da amostra
+z = (media - latencia_media) / (desvio_padrao / np.sqrt(n)) 
+
+# z crítico para um teste bilateral com α = 0.05
+z_critical = 1.96
+
+# verifica se rejeitamos a hipótese nula
+reject_null = abs(z) > z_critical
+
+print(f"Estatística z: {z}")
+print(f"Rejeitar H0: {reject_null}")
