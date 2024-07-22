@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import sqlite3
+from scipy.stats import norm 
 
 def acessoaobd():
     conn = sqlite3.connect('./db/IoT.db')
@@ -67,4 +68,17 @@ z_critical = 1.96
 reject_null = abs(z) > z_critical
 
 print(f"Estatística z: {z}")
-print(f"Rejeitar H0: {reject_null}")
+print(f"Rejeitar H0: {reject_null}")    
+
+x = np.linspace(-4, 4, 1000)
+y = norm.pdf(x, 0, 1)
+
+plt.figure(figsize=(10, 6))
+plt.plot(x, y, label='Distribuição Normal Padrão')
+plt.fill_between(x, y, where=(x <= -z_critical) | (x >= z_critical), color='red', alpha=0.5, label='Região de Rejeição')
+plt.axvline(z, color='blue', linestyle='--', label=f'Estatística Z = {z:.2f}')
+plt.title('Gráfico do Teste de Hipótese Z')
+plt.xlabel('Valores Z')
+plt.ylabel('Densidade')
+plt.legend()
+plt.show()
