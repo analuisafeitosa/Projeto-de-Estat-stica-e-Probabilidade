@@ -56,28 +56,34 @@ plt.title('Boxplot da Latência')
 plt.xlabel('Latência (ms)')
 plt.show()
 
-# teste de hipótese Z
-latencia_media = 10  # latencia média hipotetica
-n = len(df['Latência']) # tamanho da amostra
-z = (media - latencia_media) / (desvio_padrao / np.sqrt(n)) 
+# Parâmetros do teste
+latencia_media = 10  # latência média hipotética
+media = np.mean(df['Latência'])  # média da amostra
+desvio_padrao = np.std(df['Latência'], ddof=1)  # desvio padrão da amostra
+n = len(df['Latência'])  # tamanho da amostra
 
-# z crítico para um teste bilateral com α = 0.05
-z_critical = 1.96
 
-# verifica se rejeitamos a hipótese nula
-reject_null = abs(z) > z_critical
+# Estatística do teste Z
+z = (media - latencia_media) / (desvio_padrao / np.sqrt(n))
+
+# z crítico para um teste unilateral à esquerda com α = 0.05
+z_critical = norm.ppf(0.05)
+
+# Verifica se rejeitamos a hipótese nula
+reject_null = z < z_critical
 
 print(f"Estatística z: {z}")
-print(f"Rejeitar H0: {reject_null}")    
+print(f"Rejeitar H0: {reject_null}")
 
+# Plot
 x = np.linspace(-4, 4, 1000)
 y = norm.pdf(x, 0, 1)
 
 plt.figure(figsize=(10, 6))
 plt.plot(x, y, label='Distribuição Normal Padrão')
-plt.fill_between(x, y, where=(x <= -z_critical) | (x >= z_critical), color='red', alpha=0.5, label='Região de Rejeição')
+plt.fill_between(x, y, where=(x <= z_critical), color='red', alpha=0.5, label='Região de Rejeição')
 plt.axvline(z, color='blue', linestyle='--', label=f'Estatística Z = {z:.2f}')
-plt.title('Gráfico do Teste de Hipótese Z')
+plt.title('Gráfico do Teste de Hipótese Z Unilateral à Esquerda')
 plt.xlabel('Valores Z')
 plt.ylabel('Densidade')
 plt.legend()
