@@ -12,11 +12,13 @@ Increasing urbanization and the increase in the number of vehicles in large citi
 
 _sqlite3_;
 
-_heapq_;
+_numpy as np_;
 
-_networkx_;
+_scipy.stats as stats_;
 
-_matplotlib.pyplot_.
+_matplotlib.pyplot as plt_;
+
+_seaborn as sns_.
 
 # Estrutura do projeto
 
