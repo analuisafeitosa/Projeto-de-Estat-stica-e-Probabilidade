@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import sqlite3
-from scipy.stats import norm 
+from scipy.stats import norm, probplot
 
 def acessoaobd():
     conn = sqlite3.connect('./db/IoT.db')
@@ -43,6 +43,7 @@ print(f"Variância: {variancia}")
 print(f"Desvio Padrão: {desvio_padrao}")
 print(f"Quartis: \n{quartis}")
 
+# Histograma
 plt.figure(figsize=(10, 6))
 sns.histplot(df['Latência'], bins=30, kde=True)
 plt.title('Histograma da Latência')
@@ -50,10 +51,34 @@ plt.xlabel('Latência (ms)')
 plt.ylabel('Frequência')
 plt.show()
 
+# Boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x=df['Latência'])
 plt.title('Boxplot da Latência')
 plt.xlabel('Latência (ms)')
+plt.show()
+
+# Densidade
+plt.figure(figsize=(10, 6))
+sns.kdeplot(df['Latência'], shade=True)
+plt.title('Gráfico de Densidade da Latência')
+plt.xlabel('Latência (ms)')
+plt.ylabel('Densidade')
+plt.show()
+
+# Gráfico de violino
+plt.figure(figsize=(10, 6))
+sns.violinplot(x=df['Latência'])
+plt.title('Gráfico de Violino da Latência')
+plt.xlabel('Latência (ms)')
+plt.show()
+
+# Gráfico Q-Q
+plt.figure(figsize=(10, 6))
+probplot(df['Latência'], dist="norm", plot=plt)
+plt.title('Gráfico Q-Q da Latência')
+plt.xlabel('Quantis Teóricos')
+plt.ylabel('Quantis Amostrais')
 plt.show()
 
 # Parâmetros do teste
@@ -61,7 +86,6 @@ latencia_media = 10  # latência média hipotética
 media = np.mean(df['Latência'])  # média da amostra
 desvio_padrao = np.std(df['Latência'], ddof=1)  # desvio padrão da amostra
 n = len(df['Latência'])  # tamanho da amostra
-
 
 # Estatística do teste Z
 z = (media - latencia_media) / (desvio_padrao / np.sqrt(n))
