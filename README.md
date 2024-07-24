@@ -26,8 +26,6 @@ Contém a lógica das distribuições e gráficos
 Contém a criação do banco de dados
 ### Acesso ao bd
 Contém a conexão com o banco de dados
-### Visualização do grafo
-Contém lógica que realiza visualização gráfica do código
 ### Main.py
 Contém a junção de todas as funções e é onde programa deve ser executado.
 
