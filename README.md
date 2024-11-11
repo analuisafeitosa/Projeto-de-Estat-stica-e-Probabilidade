@@ -1,4 +1,4 @@
-# Análise da Latência Média do Dispositivo IOT [X] no Cenário de Semáfaros nas Grandes Cidades
+# Análise da Latência Média do Dispositivo IOT Miovision Core no Cenário de Semáfaros nas Grandes Cidades
 _Projeto da disciplina de Estatística e Probabilidade - CIn @ UFPE_
 
 #### Resumo
